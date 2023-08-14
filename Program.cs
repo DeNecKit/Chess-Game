@@ -1,1 +1,5 @@
-﻿Console.WriteLine("Chess");
+﻿#define DEBUG
+
+using Chess;
+
+Game.StartNew(RenderType.Console);
