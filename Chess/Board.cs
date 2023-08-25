@@ -5,30 +5,60 @@ namespace Chess;
 
 class Board
 {
-    private Dictionary<Square, Piece> PieceList;
-    private Side Turn;
-    private int MoveNumber;
-    private int FiftyMoveCount;
-    private Castling CastlingPermission;
+    private readonly Dictionary<Square, Piece> Pieces;
+    public Side Turn { get; private set; }
+    public int MoveNumber { get; private set; }
+    public int FiftyMoveCount { get; private set; }
+    public Castling CastlingPermission { get; private set; }
+    public Square EnPasSquare { get; private set; }
 
     public Board()
     {
-        PieceList = new();
+        Pieces = new();
         Turn = Side.None;
         MoveNumber = 1;
         FiftyMoveCount = 0;
         CastlingPermission = Castling.None;
+        EnPasSquare = Square.None;
     }
 
     public bool HasPiece(Square square)
     {
-        return PieceList.ContainsKey(square);
+        return Pieces.ContainsKey(square);
     }
 
     public Piece PieceAt(Square square)
     {
         Debug.Assert(square.IsOnBoard);
-        return PieceList[square];
+        return Pieces[square];
+    }
+
+    public void SetPiece(Square square, Piece piece)
+    {
+        Pieces.Add(square, piece);
+    }
+
+    public void RemovePiece(Square square)
+    {
+        Pieces.Remove(square);
+    }
+
+    public void MovePiece(Square from, Square to)
+    {
+        Piece piece = PieceAt(from).Clone() as Piece;
+        RemovePiece(from);
+        piece.SetSquare(to);
+        SetPiece(to, piece);
+    }
+
+    public HashSet<Move> GetLegalMoves()
+    {
+        HashSet<Move> result = new();
+        foreach (var piece in Pieces.Values)
+            if (piece.Side == Turn)
+                foreach (var move in piece.GetLegalMoves(this))
+                    result.Add(move);
+        return result;
     }
 
 
@@ -69,12 +99,30 @@ class Board
                     Square sq = new(rank, file);
 
                     Piece piece = Piece.FromChar(c, sq);
-                    board.PieceList.Add(sq, piece);
+                    board.SetPiece(sq, piece);
                 }
                 file++;
             }
             rank--;
         }
+
+        board.Turn = turn == "w" ? Side.White : Side.Black;
+        if (castlingPerm.Length == 4)
+            foreach (var c in castlingPerm)
+                board.CastlingPermission |= c switch
+                {
+                    'K' => Castling.WK,
+                    'k' => Castling.BK,
+                    'Q' => Castling.WQ,
+                    'q' => Castling.BQ,
+                    '-' => Castling.None,
+                    _ => throw new ArgumentException(
+                        "Invalid castling symbol")
+                };
+        if (enPasSq != "-")
+            board.EnPasSquare = Square.FromSAN(enPasSq);
+        board.FiftyMoveCount = fiftyMoveCount;
+        board.MoveNumber = moveNumber;
 
         return board;
     }

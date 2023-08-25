@@ -7,6 +7,11 @@ class Rook : Piece
 
     public Rook(Side side, Square square) : base(side, square) { }
 
+    public override HashSet<SquareShift> GetSquareShifts(Board board)
+    {
+        return new();
+    }
+
     public override char ToChar()
     {
         return Side == Side.White ? 'r' : 'R';

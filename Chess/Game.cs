@@ -13,6 +13,8 @@ class Game
         gameBoard = Board.FromFEN(fen);
         if (renderType == RenderType.Console)
             RenderToConsole();
+        Console.WriteLine($"Pseudo-legal moves (works only for knights): {
+            string.Join(' ', gameBoard.GetLegalMoves())}");
     }
 
     static readonly string topLine =
@@ -24,6 +26,7 @@ class Game
 
     private void RenderToConsole()
     {
+        Console.WriteLine();
         Console.WriteLine(topLine);
         for (Rank rank = Rank.R8; rank >= Rank.R1; rank--)
         {
@@ -42,6 +45,7 @@ class Game
         }
         Console.WriteLine(bottomLine);
         Console.WriteLine("     a   b   c   d   e   f   g   h");
+        Console.WriteLine();
     }
 
 
