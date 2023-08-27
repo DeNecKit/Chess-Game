@@ -24,7 +24,7 @@ class Board
 
     public bool HasPiece(Square square)
     {
-        return Pieces.ContainsKey(square);
+        return square.IsOnBoard && Pieces.ContainsKey(square);
     }
 
     public Piece PieceAt(Square square)
@@ -100,8 +100,9 @@ class Board
 
                     Piece piece = Piece.FromChar(c, sq);
                     board.SetPiece(sq, piece);
+
+                    file++;
                 }
-                file++;
             }
             rank--;
         }

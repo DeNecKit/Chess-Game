@@ -38,10 +38,10 @@ public static class RankFileExtensions
     };
 
     public static char ToChar(this Rank rank)
-        => Square.RankSymbols[(int)rank];
+        => rank == Rank.None ? '~' : Square.RankSymbols[(int)rank];
 
     public static char ToChar(this File file)
-        => Square.FileSymbols[(int)file];
+        => file == File.None ? '~' : Square.FileSymbols[(int)file];
 }
 
 
@@ -92,12 +92,18 @@ readonly struct Square
     public static char[] FileSymbols => fileSymbols;
 
     public static readonly Square
-        E1 = new(Rank.R1, File.E),
-        E8 = new(Rank.R8, File.E),
-        G1 = new(Rank.R1, File.G),
         B1 = new(Rank.R1, File.B),
-        G8 = new(Rank.R8, File.G),
-        B8 = new(Rank.R8, File.B);
+        C1 = new(Rank.R1, File.C),
+        D1 = new(Rank.R1, File.D),
+        E1 = new(Rank.R1, File.E),
+        F1 = new(Rank.R1, File.F),
+        G1 = new(Rank.R1, File.G),
+        B8 = new(Rank.R8, File.B),
+        C8 = new(Rank.R8, File.C),
+        D8 = new(Rank.R8, File.D),
+        E8 = new(Rank.R8, File.E),
+        F8 = new(Rank.R8, File.F),
+        G8 = new(Rank.R8, File.G);
 
     public static Square Shift(Square square, SquareShift shift)
     {

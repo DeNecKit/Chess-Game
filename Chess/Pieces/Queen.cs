@@ -1,7 +1,7 @@
 ﻿namespace Chess;
 
 
-class Queen : Piece
+class Queen : SliderPiece
 {
     public static new readonly PieceType PieceType = PieceType.Queen;
 
@@ -9,11 +9,19 @@ class Queen : Piece
 
     public override HashSet<SquareShift> GetSquareShifts(Board board)
     {
-        return new();
+        return squareShifts;
     }
 
     public override char ToChar()
     {
-        return Side == Side.White ? 'q' : 'Q';
+        return Side == Side.White ? 'Q' : 'q';
     }
+
+
+    private static readonly HashSet<SquareShift> squareShifts =
+        new(new SquareShift[]
+        {
+            new(1, 1), new(1, -1), new(-1, 1), new(-1, -1),
+            new(1, 0), new(0, 1), new(-1, 0), new(0, -1)
+        });
 }

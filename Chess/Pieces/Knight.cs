@@ -14,7 +14,7 @@ class Knight : Piece
 
     public override char ToChar()
     {
-        return Side == Side.White ? 'n' : 'N';
+        return Side == Side.White ? 'N' : 'n';
     }
 
 

@@ -116,6 +116,9 @@ abstract class Piece : ICloneable
 
     public abstract char ToChar();
 
+    public override string ToString()
+        => ToChar().ToString();
+
     public object Clone()
     {
         return MemberwiseClone();
